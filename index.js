@@ -30,20 +30,20 @@ const User = require("./models/User");
 
 //Routes
 app.use("/api/v1", require("./routes/api/v1/index"));
+// app.use("/api/v1/admin", require("./routes/api/v1/admin"));
+// app.use("/api/v1/users", require("./routes/api/v1/users"));
 
 app.use("*", notFound);
 
 //Error Handlers
 app.use(sendErrors);
 
-const { PORT } = require("./config/index");
 //Setting up server
-startServer = async () => {
+(startServer = async () => {
 	try {
-		await app.listen(PORT);
-		console.log(`Server is up and running on Port ${PORT}`);
+		await app.listen(process.env.PORT);
+		console.log(`Server is up and running on Port ${process.env.PORT}`);
 	} catch (err) {
 		console.log("Error in running server.");
 	}
-};
-startServer();
+})();

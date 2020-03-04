@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const { ENV, MONGO_URI_DEV, MONGO_URI_PROD } = require("./index");
+require("dotenv").config();
 
 // Map global promises
 mongoose.Promise = global.Promise;
 // Mongoose Connect
 
-const connectionString = ENV === "dev" ? MONGO_URI_DEV : MONGO_URI_PROD;
+const connectionString = process.env.MONGO_URI_DEV;
 
 connectDb = async () => {
 	try {
