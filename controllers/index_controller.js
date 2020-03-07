@@ -14,3 +14,32 @@ module.exports.addPrecautions = async (req, res) => {
 		res.status(200).json({ message: "success", error: false, data });
 	}
 };
+
+module.exports.updatePrecautions = async (req, res) => {
+	let _id = req.params.id;
+	let { before, during, after } = req.body;
+	let data = await Precaution.findOne({ _id });
+	if (data) {
+		data.before = before;
+		data.during = during;
+		data.after = after;
+		await data.save();
+		data = await Precaution.findOne({ _id });
+		res.status(200).json({ message: "success", error: false, data });
+	}
+};
+
+module.exports.deletePrecautions = async (req, res) => {
+	let _id = req.params.id;
+	let data = await Precaution.findOne({ _id });
+	if (data) {
+		await data.delete();
+		res.status(200).json({ message: "success", error: false, data: null });
+	} else {
+		res.status(400).json({
+			message: "Invalid data",
+			error: false,
+			data: null
+		});
+	}
+};
