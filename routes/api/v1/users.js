@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 // load controller
-const { register } = require("../../../controllers/user_controller");
+const {
+	register,
+	login,
+	profile
+} = require("../../../controllers/user_controller");
 
 // middlewares
 let { catchErrors } = require("../../../config/errorHandler");
@@ -11,8 +15,8 @@ let { catchErrors } = require("../../../config/errorHandler");
 
 // routes
 router.post("/register", catchErrors(register));
-// router.post("/login", catchErrors(login));
-// router.get("/profile/:id", catchErrors(index));
+router.post("/login", catchErrors(login));
+router.get("/profile/:id", catchErrors(profile));
 
 // export router
 module.exports = router;
