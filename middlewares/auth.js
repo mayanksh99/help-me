@@ -11,7 +11,6 @@ module.exports.allAuth = (req, res, next) => {
 			NOT_AUTHORIZED
 		);
 	const decodedPayload = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-	console.log(decodedPayload);
 	req.user = decodedPayload;
 	return next();
 };

@@ -22,7 +22,7 @@ module.exports.register = async (req, res) => {
 		newUser["password"] = await bcrypt.hash(password, salt);
 		user = await User.create(newUser);
 		const token = jwt.sign({ user }, process.env.JWT_PRIVATE_KEY);
-		res.status(200)
+		res.status(201)
 			.header("x-auth-token", token)
 			.json({
 				message: "successfully registered",
@@ -42,7 +42,7 @@ module.exports.login = async (req, res) => {
 		);
 		if (passValidation) {
 			const token = jwt.sign({ user }, process.env.JWT_PRIVATE_KEY);
-			res.status(200)
+			res.status(201)
 				.header("x-auth-token", token)
 				.json({
 					message: "Login successfully",

@@ -10,12 +10,14 @@ const {
 	getAid,
 	addAid,
 	updateAid,
-	deleteAid
+	deleteAid,
+	addContacts
 } = require("../../../controllers/index_controller");
 
 // middlewares
 let { catchErrors } = require("../../../config/errorHandler");
 let { allAuth } = require("../../../middlewares/auth");
+let { contactValidation } = require("../../../middlewares/validations");
 
 // routes
 router.get("/precautions", catchErrors(getPrecautions));
@@ -27,6 +29,8 @@ router.get("/aid", catchErrors(getAid));
 router.post("/aid", catchErrors(addAid));
 router.put("/aid/:id", catchErrors(updateAid));
 router.delete("/aid/:id", catchErrors(deleteAid));
+
+router.post("/contacts", allAuth, contactValidation, catchErrors(addContacts));
 
 // export router
 module.exports = router;

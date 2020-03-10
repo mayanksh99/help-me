@@ -8,11 +8,11 @@ module.exports.addPrecautions = async (req, res) => {
 	let { title } = req.body;
 	let prevData = await Precaution.find({ title });
 	if (prevData != "") {
-		res.status(200).json({ message: "Already added", error: false });
+		res.status(500).json({ message: "Already added", error: false });
 	} else {
 		let newData = req.body;
 		let data = await Precaution.create(newData);
-		res.status(200).json({ message: "success", error: false, data });
+		res.status(201).json({ message: "success", error: false, data });
 	}
 };
 
@@ -26,7 +26,7 @@ module.exports.updatePrecautions = async (req, res) => {
 		data.after = after;
 		await data.save();
 		data = await Precaution.findOne({ _id });
-		res.status(200).json({ message: "success", error: false, data });
+		res.status(201).json({ message: "success", error: false, data });
 	}
 };
 
@@ -54,11 +54,11 @@ module.exports.addAid = async (req, res) => {
 	let { woundType } = req.body;
 	let prevData = await FirstAid.find({ woundType });
 	if (prevData != "") {
-		res.status(200).json({ message: "Already added", error: false });
+		res.status(500).json({ message: "Already added", error: false });
 	} else {
 		let newData = req.body;
 		let data = await FirstAid.create(newData);
-		res.status(200).json({ message: "success", error: false, data });
+		res.status(201).json({ message: "success", error: false, data });
 	}
 };
 
@@ -71,7 +71,7 @@ module.exports.updateAid = async (req, res) => {
 		data.treatment = treatment;
 		await data.save();
 		data = await FirstAid.findOne({ _id });
-		res.status(200).json({ message: "success", error: false, data });
+		res.status(201).json({ message: "success", error: false, data });
 	}
 };
 
@@ -87,5 +87,33 @@ module.exports.deleteAid = async (req, res) => {
 			error: false,
 			data: null
 		});
+	}
+};
+
+module.exports.addContacts = async (req, res) => {
+	let user = await Contacts.findOne({ user: req.user.user._id });
+	if (user) {
+		let prevContact = await Contacts.findOne({
+			contacts: req.body.contacts
+		});
+		if (prevContact) {
+			res.status(500).json({
+				message: "Number is already added",
+				error: true,
+				data: null
+			});
+		} else {
+			user.contacts.push(req.body.contacts);
+			await user.save();
+			res.status(201).json({
+				message: "success",
+				error: false,
+				data: user
+			});
+		}
+	} else {
+		let data = { user: req.user.user._id, ...req.body };
+		data = await Contacts.create(data);
+		res.status(201).json({ message: "success", error: false, data });
 	}
 };
