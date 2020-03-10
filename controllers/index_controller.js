@@ -90,6 +90,19 @@ module.exports.deleteAid = async (req, res) => {
 	}
 };
 
+module.exports.getContacts = async (req, res) => {
+	let user = await Contacts.findOne({ user: req.user.user._id });
+	if (user) {
+		res.status(200).json({ message: "success", error: false, data: user });
+	} else {
+		res.status(404).json({
+			message: "No contact found",
+			error: true,
+			data: null
+		});
+	}
+};
+
 module.exports.addContacts = async (req, res) => {
 	let user = await Contacts.findOne({ user: req.user.user._id });
 	if (user) {
