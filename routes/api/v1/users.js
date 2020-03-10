@@ -10,13 +10,13 @@ const {
 
 // middlewares
 let { catchErrors } = require("../../../config/errorHandler");
-// let { allAuth } = require("../../../middlewares/auth");
-// let { userValidation } = require("../../../middlewares/auth");
+let { allAuth } = require("../../../middlewares/auth");
+let { userValidation } = require("../../../middlewares/validations");
 
 // routes
-router.post("/register", catchErrors(register));
+router.post("/register", userValidation, catchErrors(register));
 router.post("/login", catchErrors(login));
-router.get("/profile/:id", catchErrors(profile));
+router.get("/profile/:id", allAuth, catchErrors(profile));
 
 // export router
 module.exports = router;
