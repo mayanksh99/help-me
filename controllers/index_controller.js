@@ -110,7 +110,7 @@ module.exports.addContacts = async (req, res) => {
 			contacts: req.body.contacts
 		});
 		if (prevContact) {
-			res.status(500).json({
+			res.status(400).json({
 				message: "Number is already added",
 				error: true,
 				data: null
@@ -128,5 +128,24 @@ module.exports.addContacts = async (req, res) => {
 		let data = { user: req.user.user._id, ...req.body };
 		data = await Contacts.create(data);
 		res.status(201).json({ message: "success", error: false, data });
+	}
+};
+
+module.exports.removeContacts = async (req, res) => {
+	let user = await Contacts.findOne({ user: req.user.user._id });
+	if (user) {
+		console.log(user.contacts);
+		let indexOfContact = user.contacts.indexOf(req.body.contact);
+		if (indexOfContact > -1) {
+			user.contacts.splice(indexOfContact, 1);
+		}
+		await user.save();
+		res.status(200).json({ message: "success", error: false, data: user });
+	} else {
+		res.status(400).json({
+			message: "Contact not found",
+			error: true,
+			data: null
+		});
 	}
 };

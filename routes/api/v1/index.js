@@ -12,7 +12,8 @@ const {
 	updateAid,
 	deleteAid,
 	getContacts,
-	addContacts
+	addContacts,
+	removeContacts
 } = require("../../../controllers/index_controller");
 
 // middlewares
@@ -33,6 +34,7 @@ router.delete("/aid/:id", catchErrors(deleteAid));
 
 router.get("/contacts", allAuth, catchErrors(getContacts));
 router.post("/contacts", allAuth, contactValidation, catchErrors(addContacts));
+router.delete("/contacts", allAuth, catchErrors(removeContacts));
 
 // export router
 module.exports = router;
