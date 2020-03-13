@@ -66,7 +66,8 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.profile = async (req, res) => {
-	let user = await User.findById(req.params.id);
+	let { name, email, phone } = req.user.user;
+	let user = { name, email, phone };
 	if (user) {
 		res.status(200).json({ message: "success", error: false, data: user });
 	} else {

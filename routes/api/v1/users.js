@@ -16,7 +16,7 @@ let { userValidation } = require("../../../middlewares/validations");
 // routes
 router.post("/register", userValidation, catchErrors(register));
 router.post("/login", catchErrors(login));
-router.get("/profile/:id", allAuth, catchErrors(profile));
+router.get("/profile", allAuth, catchErrors(profile));
 
 // export router
 module.exports = router;

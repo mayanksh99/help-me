@@ -30,6 +30,7 @@ const User = require("./models/User");
 const Precaution = require("./models/Precautions");
 const FirstAid = require("./models/FirstAid");
 const Contacts = require("./models/Contacts");
+const Location = require("./models/Location");
 
 //Routes
 app.use("/api/v1", require("./routes/api/v1/index"));

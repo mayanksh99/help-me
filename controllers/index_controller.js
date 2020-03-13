@@ -92,7 +92,7 @@ module.exports.deleteAid = async (req, res) => {
 
 module.exports.getContacts = async (req, res) => {
 	let user = await Contacts.findOne({ user: req.user.user._id });
-	if (user) {
+	if (user && user.contacts.length > 0) {
 		res.status(200).json({ message: "success", error: false, data: user });
 	} else {
 		res.status(404).json({
