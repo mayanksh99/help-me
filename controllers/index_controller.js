@@ -149,3 +149,47 @@ module.exports.removeContacts = async (req, res) => {
 		});
 	}
 };
+
+module.exports.getLocation = async (req, res) => {
+	let data = await Location.findOne({ user: req.user.user._id });
+	if (data) {
+		res.status(200).json({ message: "success", error: false, data });
+	} else {
+		res.status(404).json({
+			message: "No location found",
+			error: true,
+			data: null
+		});
+	}
+};
+
+module.exports.addLocation = async (req, res) => {
+	let user = await Location.findOne({ user: req.user.user._id });
+	if (user) {
+		console.log(user.coordinate.length);
+		// if (prevContact) {
+		// 	res.status(400).json({
+		// 		message: "Number is already added",
+		// 		error: true,
+		// 		data: null
+		// 	});
+		// } else {
+		// 	user.contacts.push(req.body.contacts);
+		// 	await user.save();
+		// 	res.status(201).json({
+		// 		message: "success",
+		// 		error: false,
+		// 		data: user
+		// 	});
+		// }
+	} else {
+		// let coordinate = [[req.body.latitude, req.body.longitude]];
+		let coordinate = [
+			{ latitude: req.body.latitude, longitude: req.body.longitude }
+		];
+		let data = { user: req.user.user._id, coordinate };
+		console.log(data);
+		data = await Location.create(data);
+		res.status(201).json({ message: "success", error: false, data });
+	}
+};
