@@ -1,3 +1,13 @@
+module.exports.generateHash = length => {
+	let chars =
+		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	let code = "";
+	for (let i = 0; i < length; i++) {
+		code += chars[Math.round(Math.random() * (chars.length - 1))];
+	}
+	return code;
+};
+
 module.exports.getPrecautions = async (req, res) => {
 	let data = await Precaution.find().sort({ createdAt: "desc" });
 	// throw new Error("sad"); checking error
@@ -151,7 +161,7 @@ module.exports.removeContacts = async (req, res) => {
 };
 
 module.exports.getLocation = async (req, res) => {
-	let data = await Location.findOne({ user: req.user.user._id });
+	let data = await Location.findOne(req.query);
 	if (data) {
 		res.status(200).json({ message: "success", error: false, data });
 	} else {
@@ -165,31 +175,45 @@ module.exports.getLocation = async (req, res) => {
 
 module.exports.addLocation = async (req, res) => {
 	let user = await Location.findOne({ user: req.user.user._id });
+	let coordinate = [
+		{ latitude: req.body.latitude, longitude: req.body.longitude }
+	];
+	let data,
+		trackId = this.generateHash(5);
 	if (user) {
-		console.log(user.coordinate.length);
-		// if (prevContact) {
-		// 	res.status(400).json({
-		// 		message: "Number is already added",
-		// 		error: true,
-		// 		data: null
-		// 	});
-		// } else {
-		// 	user.contacts.push(req.body.contacts);
-		// 	await user.save();
-		// 	res.status(201).json({
-		// 		message: "success",
-		// 		error: false,
-		// 		data: user
-		// 	});
-		// }
+		if (user.coordinate.length >= 3) {
+			user.coordinate.shift();
+			user.coordinate.push({
+				latitude: req.body.latitude,
+				longitude: req.body.longitude
+			});
+			user.save();
+		} else {
+			user.coordinate.push({
+				latitude: req.body.latitude,
+				longitude: req.body.longitude
+			});
+			user.save();
+		}
+		res.status(200).json({ message: "success", error: false, data: user });
 	} else {
 		// let coordinate = [[req.body.latitude, req.body.longitude]];
-		let coordinate = [
-			{ latitude: req.body.latitude, longitude: req.body.longitude }
-		];
-		let data = { user: req.user.user._id, coordinate };
-		console.log(data);
+		data = { user: req.user.user._id, coordinate, trackId };
 		data = await Location.create(data);
-		res.status(201).json({ message: "success", error: false, data });
+		res.status(200).json({ message: "success", error: false, data });
+	}
+};
+
+module.exports.removeLocation = async (req, res) => {
+	let data = await Location.findOne({ user: req.user.user._id });
+	if (data) {
+		await data.delete();
+		res.status(200).json({ message: "success", error: false, data: null });
+	} else {
+		res.status(400).json({
+			message: "Invalid trackId",
+			error: false,
+			data: null
+		});
 	}
 };

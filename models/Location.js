@@ -10,7 +10,8 @@ const LocationSchema = new mongoose.Schema(
 		coordinate: {
 			type: Array,
 			required: true
-		}
+		},
+		trackId: { type: String, required: true }
 	},
 	{ timestamps: true }
 );

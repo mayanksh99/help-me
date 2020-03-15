@@ -15,7 +15,8 @@ const {
 	addContacts,
 	removeContacts,
 	getLocation,
-	addLocation
+	addLocation,
+	removeLocation
 } = require("../../../controllers/index_controller");
 
 // middlewares
@@ -40,5 +41,6 @@ router.delete("/contacts", allAuth, catchErrors(removeContacts));
 
 router.get("/location", allAuth, catchErrors(getLocation));
 router.post("/location", allAuth, catchErrors(addLocation));
+router.delete("/location", allAuth, catchErrors(removeLocation));
 // export router
 module.exports = router;
