@@ -105,7 +105,7 @@ module.exports.deleteAid = async (req, res) => {
 };
 
 module.exports.getContacts = async (req, res) => {
-	let user = await Contacts.findOne({ user: req.user.user._id });
+	let user = await Contacts.findOne({ user: req.user.id });
 	if (user && user.contacts.length > 0) {
 		res.status(200).json({ message: "success", error: false, data: user });
 	} else {
@@ -118,7 +118,7 @@ module.exports.getContacts = async (req, res) => {
 };
 
 module.exports.addContacts = async (req, res) => {
-	let user = await Contacts.findOne({ user: req.user.user._id });
+	let user = await Contacts.findOne({ user: req.user.id });
 	if (user) {
 		let prevContact = await Contacts.findOne({
 			contacts: req.body.contacts
@@ -139,14 +139,14 @@ module.exports.addContacts = async (req, res) => {
 			});
 		}
 	} else {
-		let data = { user: req.user.user._id, ...req.body };
+		let data = { user: req.user.id, ...req.body };
 		data = await Contacts.create(data);
 		res.status(201).json({ message: "success", error: false, data });
 	}
 };
 
 module.exports.removeContacts = async (req, res) => {
-	let user = await Contacts.findOne({ user: req.user.user._id });
+	let user = await Contacts.findOne({ user: req.user.id });
 	if (user) {
 		console.log(user.contacts);
 		let indexOfContact = user.contacts.indexOf(req.body.contact);
@@ -165,7 +165,7 @@ module.exports.removeContacts = async (req, res) => {
 };
 
 module.exports.getLocation = async (req, res) => {
-	let data = await Location.findOne(req.query);
+	let data = await Location.findOne(req.params);
 	if (data) {
 		res.status(200).json({ message: "success", error: false, data });
 	} else {
@@ -178,7 +178,7 @@ module.exports.getLocation = async (req, res) => {
 };
 
 module.exports.addLocation = async (req, res) => {
-	let user = await Location.findOne({ user: req.user.user._id });
+	let user = await Location.findOne({ user: req.user.id });
 	let coordinate = [
 		{ latitude: req.body.latitude, longitude: req.body.longitude }
 	];
@@ -202,14 +202,14 @@ module.exports.addLocation = async (req, res) => {
 		res.status(200).json({ message: "success", error: false, data: user });
 	} else {
 		// let coordinate = [[req.body.latitude, req.body.longitude]];
-		data = { user: req.user.user._id, coordinate, trackId };
+		data = { user: req.user.id, coordinate, trackId };
 		data = await Location.create(data);
 		res.status(200).json({ message: "success", error: false, data });
 	}
 };
 
 module.exports.removeLocation = async (req, res) => {
-	let data = await Location.findOne({ user: req.user.user._id });
+	let data = await Location.findOne({ user: req.user.id });
 	if (data) {
 		await data.delete();
 		res.status(200).json({ message: "success", error: false, data: null });

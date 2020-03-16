@@ -39,7 +39,7 @@ router.get("/contacts", allAuth, catchErrors(getContacts));
 router.post("/contacts", allAuth, contactValidation, catchErrors(addContacts));
 router.delete("/contacts", allAuth, catchErrors(removeContacts));
 
-router.get("/location", allAuth, catchErrors(getLocation));
+router.get("/location/:trackId", allAuth, catchErrors(getLocation));
 router.post("/location", allAuth, catchErrors(addLocation));
 router.delete("/location", allAuth, catchErrors(removeLocation));
 // export router

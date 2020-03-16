@@ -1,7 +1,4 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-require("dotenv").config();
 
 module.exports.register = async (req, res) => {
 	let { name, email, phone, password } = req.body;
