@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+require("dotenv").config();
+
 module.exports.register = async (req, res) => {
 	let { name, email, phone, password } = req.body;
 	let user = await User.findOne({
@@ -21,7 +23,7 @@ module.exports.register = async (req, res) => {
 		let salt = await bcrypt.genSalt(10);
 		newUser["password"] = await bcrypt.hash(password, salt);
 		user = await User.create(newUser);
-		const token = jwt.sign({ user }, process.env.JWT_PRIVATE_KEY);
+		const token = user.generateAuthToken();
 		res.status(201)
 			.header("x-auth-token", token)
 			.json({
