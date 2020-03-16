@@ -22,7 +22,10 @@ const {
 // middlewares
 let { catchErrors } = require("../../../config/errorHandler");
 let { allAuth, adminAuth } = require("../../../middlewares/auth");
-let { contactValidation } = require("../../../middlewares/validations");
+let {
+	contactValidation,
+	locationValidation
+} = require("../../../middlewares/validations");
 
 // routes
 router.get("/precautions", catchErrors(getPrecautions));
@@ -40,7 +43,7 @@ router.post("/contacts", allAuth, contactValidation, catchErrors(addContacts));
 router.delete("/contacts", allAuth, catchErrors(removeContacts));
 
 router.get("/location/:trackId", allAuth, catchErrors(getLocation));
-router.post("/location", allAuth, catchErrors(addLocation));
+router.post("/location", allAuth, locationValidation, catchErrors(addLocation));
 router.delete("/location", allAuth, catchErrors(removeLocation));
 // export router
 module.exports = router;

@@ -36,3 +36,27 @@ module.exports.contactValidation = (req, res, next) => {
 		return sendError(res, "Not a valid contact!!", BAD_REQUEST);
 	}
 };
+
+module.exports.locationValidation = (req, res, next) => {
+	let { latitude, longitude } = req.body;
+	if (!latitude || !longitude) {
+		return sendError(res, "All fields are mandatory!!", BAD_REQUEST);
+	}
+	if (latitude <= 90 && latitude >= -90) {
+		if (longitude <= 180 && longitude >= -180) {
+			return next();
+		} else {
+			return sendError(
+				res,
+				"Longitude should be less than or equal to 180",
+				BAD_REQUEST
+			);
+		}
+	} else {
+		return sendError(
+			res,
+			"Latitude should be less than or equal to 90",
+			BAD_REQUEST
+		);
+	}
+};
