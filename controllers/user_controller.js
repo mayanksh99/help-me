@@ -43,7 +43,7 @@ module.exports.login = async (req, res) => {
 			String(user.password)
 		);
 		if (passValidation) {
-			const token = jwt.sign({ user }, process.env.JWT_PRIVATE_KEY);
+			const token = user.generateAuthToken();
 			res.status(201)
 				.header("x-auth-token", token)
 				.json({

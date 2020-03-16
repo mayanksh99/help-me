@@ -18,7 +18,11 @@ module.exports.addPrecautions = async (req, res) => {
 	let { title } = req.body;
 	let prevData = await Precaution.find({ title });
 	if (prevData != "") {
-		res.status(500).json({ message: "Already added", error: false });
+		res.status(500).json({
+			message: "Already added",
+			error: true,
+			data: null
+		});
 	} else {
 		let newData = req.body;
 		let data = await Precaution.create(newData);

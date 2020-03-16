@@ -24,10 +24,10 @@ module.exports.adminAuth = (req, res, next) => {
 			NOT_AUTHORIZED
 		);
 	const decodedPayload = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-	if (decodedPayload.role === "admin") {
+	if (decodedPayload.isAdmin) {
 		req.user = decodedPayload;
 		return next();
 	} else {
-		return sendError(res, "Forbidden", NOT_AUTHORIZED);
+		return sendError(res, "Not a admin", NOT_AUTHORIZED);
 	}
 };
