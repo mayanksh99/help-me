@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema(
 		phone: { type: Number, required: true },
 		password: { type: String, required: true },
 		isAdmin: { type: Boolean, default: false },
-		verifyEmail: { token: { type: String }, expires: { type: Date } }
+		otp: { type: String },
+		isVerified: { type: Boolean, default: false }
 	},
 	{ timestamps: true }
 );
@@ -21,7 +22,8 @@ UserSchema.methods.generateAuthToken = function() {
 			name: this.name,
 			email: this.email,
 			phone: this.phone,
-			isAdmin: this.isAdmin
+			isAdmin: this.isAdmin,
+			isVerified: this.isVerified
 		},
 		process.env.JWT_PRIVATE_KEY
 	);
