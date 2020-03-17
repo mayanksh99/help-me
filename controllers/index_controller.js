@@ -221,3 +221,18 @@ module.exports.removeLocation = async (req, res) => {
 		});
 	}
 };
+
+module.exports.verifyEmail = async (req, res) => {
+	let user = await User.findOne(req.body);
+	if (user) {
+		user.isVerified = true;
+		await user.save();
+		res.status(200).json({ message: "Verified", error: false, data: user });
+	} else {
+		res.status(400).json({
+			message: "Not a valid OTP",
+			error: true,
+			data: null
+		});
+	}
+};

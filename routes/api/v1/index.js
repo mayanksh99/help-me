@@ -16,7 +16,8 @@ const {
 	removeContacts,
 	getLocation,
 	addLocation,
-	removeLocation
+	removeLocation,
+	verifyEmail
 } = require("../../../controllers/index_controller");
 
 // middlewares
@@ -45,5 +46,7 @@ router.delete("/contacts", allAuth, catchErrors(removeContacts));
 router.get("/location/:trackId", allAuth, catchErrors(getLocation));
 router.post("/location", allAuth, locationValidation, catchErrors(addLocation));
 router.delete("/location", allAuth, catchErrors(removeLocation));
+
+router.post("/verify", allAuth, catchErrors(verifyEmail));
 // export router
 module.exports = router;
