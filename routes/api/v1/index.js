@@ -25,7 +25,8 @@ let { catchErrors } = require("../../../config/errorHandler");
 let { allAuth, adminAuth } = require("../../../middlewares/auth");
 let {
 	contactValidation,
-	locationValidation
+	locationValidation,
+	otpValidation
 } = require("../../../middlewares/validations");
 
 // routes
@@ -47,6 +48,6 @@ router.get("/location/:trackId", allAuth, catchErrors(getLocation));
 router.post("/location", allAuth, locationValidation, catchErrors(addLocation));
 router.delete("/location", allAuth, catchErrors(removeLocation));
 
-router.post("/verify", allAuth, catchErrors(verifyEmail));
+router.post("/verify", allAuth, otpValidation, catchErrors(verifyEmail));
 // export router
 module.exports = router;

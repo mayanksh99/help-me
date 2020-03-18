@@ -60,3 +60,12 @@ module.exports.locationValidation = (req, res, next) => {
 		);
 	}
 };
+
+module.exports.otpValidation = (req, res, next) => {
+	let { otp } = req.body;
+	if (!otp) {
+		return sendError(res, "OTP is required!!", BAD_REQUEST);
+	} else {
+		return next();
+	}
+};

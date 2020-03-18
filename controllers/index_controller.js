@@ -224,10 +224,10 @@ module.exports.removeLocation = async (req, res) => {
 
 module.exports.verifyEmail = async (req, res) => {
 	let user = await User.findOne(req.body);
-	if (user) {
+	if (user && user.email === req.user.email) {
 		user.isVerified = true;
 		await user.save();
-		res.status(200).json({ message: "Verified", error: false, data: user });
+		res.status(200).json({ message: "Verified", error: false, data: null });
 	} else {
 		res.status(400).json({
 			message: "Not a valid OTP",
