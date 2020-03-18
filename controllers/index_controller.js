@@ -123,6 +123,8 @@ module.exports.addContacts = async (req, res) => {
 		let prevContact = await Contacts.findOne({
 			contacts: req.body.contacts
 		});
+		console.log(prevContact);
+		console.log(user);
 		if (prevContact) {
 			res.status(400).json({
 				message: "Number is already added",
@@ -146,7 +148,10 @@ module.exports.addContacts = async (req, res) => {
 };
 
 module.exports.removeContacts = async (req, res) => {
-	let user = await Contacts.findOne({ user: req.user.id });
+	let user = await Contacts.findOne({
+		user: req.user.id,
+		contacts: req.body.contact
+	});
 	if (user) {
 		console.log(user.contacts);
 		let indexOfContact = user.contacts.indexOf(req.body.contact);
