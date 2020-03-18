@@ -34,7 +34,7 @@ module.exports.register = async (req, res) => {
 
 		// send mail with defined transport object
 		let info = await transporter.sendMail({
-			from: '"Help Me" <devsdsckiet@gmail.com/>', // sender address
+			from: '"Help Me" <devsdsckiet@gmail.com>', // sender address
 			to: Email, // list of receivers
 			subject: "OTP sent", // Subject line
 			text: `Welcome, Here is your otp ${code}`, // plain text body
