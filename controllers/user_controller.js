@@ -95,7 +95,7 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.profile = async (req, res) => {
-	let { name, email, phone } = req.user.user;
+	let { name, email, phone } = req.user;
 	let user = { name, email, phone };
 	if (user) {
 		res.status(200).json({ message: "success", error: false, data: user });
