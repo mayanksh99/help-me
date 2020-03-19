@@ -17,7 +17,8 @@ const {
 	getLocation,
 	addLocation,
 	removeLocation,
-	verifyEmail
+	verifyEmail,
+	sendSMS
 } = require("../../../controllers/index_controller");
 
 // middlewares
@@ -49,5 +50,7 @@ router.post("/location", allAuth, locationValidation, catchErrors(addLocation));
 router.delete("/location", allAuth, catchErrors(removeLocation));
 
 router.post("/verify", allAuth, otpValidation, catchErrors(verifyEmail));
+
+router.post("/sendSMS", allAuth, catchErrors(sendSMS));
 // export router
 module.exports = router;

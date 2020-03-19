@@ -1,3 +1,9 @@
+require("dotenv").config();
+
+const accountSid = process.env.ACCOUNTSID;
+const authToken = process.env.AUTHTOKEN;
+const client = require("twilio")(accountSid, authToken);
+
 module.exports.generateHash = length => {
 	let chars =
 		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -121,7 +127,8 @@ module.exports.addContacts = async (req, res) => {
 	let user = await Contacts.findOne({ user: req.user.id });
 	if (user) {
 		let prevContact = await Contacts.findOne({
-			contacts: req.body.contacts
+			contacts: req.body.contacts,
+			user: req.user.id
 		});
 		console.log(prevContact);
 		console.log(user);
@@ -240,4 +247,39 @@ module.exports.verifyEmail = async (req, res) => {
 			data: null
 		});
 	}
+};
+
+module.exports.sendSMS = async (req, res) => {
+	let user = await Contacts.findOne({ user: req.user.id });
+	let dumyArr = ["+919695414203", "+919695414203"];
+	// console.log(req.body.message);
+	//user.contacts inplace of dumyArr
+	dumyArr.forEach(value => {
+		client.messages
+			.create({
+				body: req.body.message,
+				from: process.env.FROM,
+				to: value
+			})
+			.then(message => console.log(message.sid));
+		// .then(
+		// 	res
+		// 		.status(200)
+		// 		.json({ message: "success", error: false, data: null })
+		// );
+		// res.status(200).json({
+		// 	message: "success",
+		// 	error: false,
+		// 	data: null
+		// });
+	});
+	// try {
+
+	// } catch (err) {
+	// 	res.status(400).json({
+	// 		message: "Something went wrong",
+	// 		error: true,
+	// 		data: null
+	// 	});
+	// }
 };
