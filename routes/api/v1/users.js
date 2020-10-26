@@ -3,9 +3,9 @@ const router = express.Router();
 
 // load controller
 const {
-	register,
-	login,
-	profile
+    register,
+    login,
+    profile
 } = require("../../../controllers/user_controller");
 
 // middlewares
