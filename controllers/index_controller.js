@@ -126,20 +126,19 @@ module.exports.getContacts = async(req, res) => {
 module.exports.addContacts = async(req, res) => {
     let user = await Contacts.findOne({ user: req.user.id });
     if (user) {
-        let prevContact = await Contacts.findOne({
-            contacts: req.body.contacts,
+        let prevContact = await Contacts.find({
+            contacts: { $elemMatch: { number: req.body.number } },
             user: req.user.id
         });
-        console.log(prevContact);
-        console.log(user);
-        if (prevContact) {
+        // console.log(prevContact);
+        if (prevContact.length > 0) {
             res.status(400).json({
                 message: "Number is already added",
                 error: true,
                 data: null
             });
         } else {
-            user.contacts.push(req.body.contacts);
+            user.contacts.push(req.body);
             await user.save();
             res.status(201).json({
                 message: "success",
@@ -148,7 +147,7 @@ module.exports.addContacts = async(req, res) => {
             });
         }
     } else {
-        let data = { user: req.user.id, ...req.body };
+        let data = { user: req.user.id, contacts: {...req.body } };
         data = await Contacts.create(data);
         res.status(201).json({ message: "success", error: false, data });
     }

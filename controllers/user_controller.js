@@ -15,6 +15,7 @@ module.exports.register = async(req, res) => {
     let user = await User.findOne({
         email: { $regex: email, $options: "i" }
     });
+    console.log(user);
     if (user) {
         res.status(400).json({
             message: "Email already registerd",
