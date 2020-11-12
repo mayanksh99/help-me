@@ -156,11 +156,11 @@ module.exports.addContacts = async(req, res) => {
 module.exports.removeContacts = async(req, res) => {
     let user = await Contacts.findOne({
         user: req.user.id,
-        contacts: req.body.contact
+        contacts: { $elemMatch: { number: req.query.number } }
     });
     if (user) {
-        console.log(user.contacts);
-        let indexOfContact = user.contacts.indexOf(req.body.contact);
+        // console.log(user);
+        let indexOfContact = user.contacts.findIndex(num => num.number === req.query.number);
         if (indexOfContact > -1) {
             user.contacts.splice(indexOfContact, 1);
         }

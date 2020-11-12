@@ -3,31 +3,31 @@ const router = express.Router();
 
 // load controller
 const {
-	getPrecautions,
-	addPrecautions,
-	updatePrecautions,
-	deletePrecautions,
-	getAid,
-	addAid,
-	updateAid,
-	deleteAid,
-	getContacts,
-	addContacts,
-	removeContacts,
-	getLocation,
-	addLocation,
-	removeLocation,
-	verifyEmail,
-	sendSMS
+    getPrecautions,
+    addPrecautions,
+    updatePrecautions,
+    deletePrecautions,
+    getAid,
+    addAid,
+    updateAid,
+    deleteAid,
+    getContacts,
+    addContacts,
+    removeContacts,
+    getLocation,
+    addLocation,
+    removeLocation,
+    verifyEmail,
+    sendSMS
 } = require("../../../controllers/index_controller");
 
 // middlewares
 let { catchErrors } = require("../../../config/errorHandler");
 let { allAuth, adminAuth } = require("../../../middlewares/auth");
 let {
-	contactValidation,
-	locationValidation,
-	otpValidation
+    contactValidation,
+    locationValidation,
+    otpValidation
 } = require("../../../middlewares/validations");
 
 // routes
